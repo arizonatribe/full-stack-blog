@@ -5,7 +5,9 @@ import BlogForm from './BlogForm';
 import BlogFormReview from './BlogFormReview';
 
 class BlogNew extends Component {
+/* eslint-disable no-undef */
   state = { showFormReview: false };
+/* eslint-enable no-undef */
 
   renderContent() {
     if (this.state.showFormReview) {

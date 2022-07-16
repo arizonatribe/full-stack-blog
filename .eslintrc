@@ -1,0 +1,9 @@
+{
+  "extends": ["@vanillas/eslint-config"],
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "jsdoc/require-jsdoc": "off"
+  }
+}
