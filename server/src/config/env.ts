@@ -1,5 +1,6 @@
 import dotenv from "dotenv"
 import { Level } from "pino"
+import * as fs from "fs"
 import * as path from "path"
 import * as envalid from "envalid"
 
@@ -23,7 +24,7 @@ const { str, port } = envalid
 export interface ServerEnv {
   PORT: number
   LOG_LEVEL: Level
-  NODE_ENV: "development" | "production"
+  NODE_ENV: "development" | "production" | "test"
   COOKIE_KEY: string
   CACHE_URI: string
   DB_URI: string
@@ -35,9 +36,15 @@ export interface ServerEnv {
 function parseEnv(processEnv = process.env): ServerEnv {
   const dotEnvPath = /^production$/.test(processEnv.NODE_ENV as string)
     ? ".env.prod"
-    : ".env"
+    : /^test$/.test(processEnv.NODE_ENV as string)
+      ? ".env.test"
+      : ".env"
 
-  const result = dotenv.config({ path: dotEnvPath })
+  const result = dotenv.config(
+    fs.existsSync(dotEnvPath)
+      ? { path: dotEnvPath }
+      : undefined
+  )
 
   if (result.error) {
     throw result.error
@@ -65,13 +72,12 @@ function parseEnv(processEnv = process.env): ServerEnv {
       desc: "The connection string for the cache"
     }),
     COOKIE_KEY: str({
-      default: "",
-      desc: "The key to use to sign and verify cookies"
+      desc: "The (plain-text) key to use to sign and verify cookies"
     }),
     NODE_ENV: str({
       desc: "The environment where this application is running",
       default: "development",
-      choices: ["development", "production"]
+      choices: ["development", "production", "test"]
     }),
     LOG_LEVEL: str({
       default: "info",

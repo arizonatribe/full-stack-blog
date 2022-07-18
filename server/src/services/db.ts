@@ -107,16 +107,22 @@ async function connectDb(url: string, logger: Logger) {
   return mongoose
 }
 
-async function createDbClient(config: ServerConfig, cache: Cache, logger: Logger) {
+async function createDbClient(
+  config: ServerConfig,
+  cache?: Cache,
+  logger: Logger | typeof console = console
+) {
   const { dbURI } = config
 
   logger.trace("Setting up DB models")
 
   const models = createModels()
 
-  enhanceMongoose(cache, logger)
+  if (cache != null) {
+    enhanceMongoose(cache, logger as Logger)
+  }
 
-  await connectDb(dbURI, logger)
+  await connectDb(dbURI, logger as Logger)
 
   return models
 }
