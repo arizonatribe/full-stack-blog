@@ -1,5 +1,5 @@
 node_modules
 nohup.out
-*.env
+**.env
 data/
 server/lib/

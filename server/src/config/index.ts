@@ -22,12 +22,16 @@ const pkg = require("../../../package.json")
  * @property {boolean} isProduction Whether or not this application is running in production
  * @property {string} staticAssetsPath The root directory path for the client-side application assets
  * @property {string} indexPath The file path for the client-side application entrypoint
+ * @property {string} bucket Name of the AWS S3 bucket where optional file uploads should go
+ * @property {string} accessKeyId AWS secret access key ID
+ * @property {string} secretAccessKey AWS access secret
  */
 export interface ServerConfig {
   port: number
   appName: string
   appVersion: string
   apiVersion: string
+  bucket: string
   level: Level
   dbURI: string
   cacheURI: string
@@ -37,6 +41,8 @@ export interface ServerConfig {
   isProduction: boolean
   staticAssetsPath: string
   indexPath: string
+  accessKeyId: string
+  secretAccessKey: string
 }
 
 function createConfig(): ServerConfig {
@@ -48,11 +54,14 @@ function createConfig(): ServerConfig {
     appVersion: pkg.version,
     apiVersion: `v${pkg.version.split(".")[0]}`,
     level: env.LOG_LEVEL,
+    bucket: env.BUCKET_NAME,
     dbURI: env.DB_URI,
     cacheURI: env.CACHE_URI,
     cookieKey: env.COOKIE_KEY,
     clientID: env.CLIENT_ID,
     clientSecret: env.CLIENT_SECRET,
+    accessKeyId: env.ACCESS_KEY_ID,
+    secretAccessKey: env.SECRET_ACCESS_KEY,
     isProduction: env.NODE_ENV === "production",
     staticAssetsPath: env.STATIC_ASSETS_PATH,
     indexPath: path.resolve(env.STATIC_ASSETS_PATH, "index.html")

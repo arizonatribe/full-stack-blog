@@ -19,7 +19,10 @@ const { str, port } = envalid
  * @property {string} [DB_URI='mongodb://localhost:27017/blog'] The connection string for the blog database
  * @property {string} CLIENT_SECRET The OAuth2 Client secret (for third-party login)
  * @property {string} CLIENT_ID The OAuth2 Client ID (for third-party login)
+ * @property {string} BUCKET_NAME Name of the AWS S3 bucket where optional file uploads should go
  * @property {string} [STATIC_ASSETS_PATH='client/build/'] Root location of the browser (front-end) static assets
+ * @property {string} ACCESS_KEY_ID AWS secret access key ID
+ * @property {string} SECRET_ACCESS_KEY AWS access secret
  */
 export interface ServerEnv {
   PORT: number
@@ -31,6 +34,9 @@ export interface ServerEnv {
   CLIENT_SECRET: string
   CLIENT_ID: string
   STATIC_ASSETS_PATH: string
+  BUCKET_NAME: string
+  ACCESS_KEY_ID: string
+  SECRET_ACCESS_KEY: string
 }
 
 function parseEnv(processEnv = process.env): ServerEnv {
@@ -51,9 +57,21 @@ function parseEnv(processEnv = process.env): ServerEnv {
   }
 
   return envalid.cleanEnv<ServerEnv>(processEnv, {
+    ACCESS_KEY_ID: str({
+      default: "",
+      desc: "AWS secret access key ID"
+    }),
+    SECRET_ACCESS_KEY: str({
+      default: "",
+      desc: "AWS access secret"
+    }),
     STATIC_ASSETS_PATH: str({
       default: path.resolve(process.cwd(), "client", "build"),
       desc: "Root location of the browser (front-end) static assets"
+    }),
+    BUCKET_NAME: str({
+      default: "full-stack-blog-bucket",
+      desc: "Name of the AWS S3 bucket where optional file uploads should go"
     }),
     CLIENT_ID: str({
       docs: "https://console.cloud.google.com/apis/credentials",

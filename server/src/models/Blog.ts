@@ -4,6 +4,7 @@ import { User } from "./User"
 export interface Blog extends Document {
   title: string,
   content: string
+  imageUrl: string,
   createdAt: Date
   _user: User["_id"]
 }
@@ -12,6 +13,7 @@ function createBlogModel() {
   const blogSchema = new Schema({
     title: String,
     content: String,
+    imageUrl: String,
     createdAt: { type: Date, default: Date.now },
     _user: { type: Schema.Types.ObjectId, ref: "User" }
   })

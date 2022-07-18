@@ -47,11 +47,12 @@ function createBlogMiddleware(config: ServerConfig, services: Services) {
     },
 
     async createNewBlogEntry(req: Request, res: Response, next: NextFunction) {
-      const { title, content } = req.body
+      const { title, content, imageUrl } = req.body
 
       const blog = new models.Blog({
         title,
         content,
+        imageUrl,
         _user: req.user?.id
       })
 

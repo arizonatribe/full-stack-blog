@@ -8,7 +8,8 @@ const homeUrl = "http://localhost:3000"
 
 beforeEach(async () => {
   browser = await puppeteer.launch({
-    headless: false
+    headless: true,
+    args: ["--no-sandbox"]
   })
 
   page = await createPage(browser)

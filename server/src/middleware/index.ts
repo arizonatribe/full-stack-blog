@@ -3,8 +3,9 @@ import { ServerConfig } from "../config"
 import createAuthMiddleware, { AuthMiddleware } from "./auth"
 import createBlogMiddleware, { BlogMiddleware } from "./blog"
 import createBasicMiddleware, { BasicMiddleware } from "./basic"
+import createUploadMiddleware, { UploadMiddleware } from "./upload"
 
-export interface Middleware extends BasicMiddleware, AuthMiddleware, BlogMiddleware { }
+export interface Middleware extends BasicMiddleware, AuthMiddleware, BlogMiddleware, UploadMiddleware { }
 
 /**
  * A factory function which creates all the app and common middleware
@@ -19,7 +20,8 @@ function createMiddleware(config: ServerConfig, services: Services) {
   return {
     ...createAuthMiddleware(config, services),
     ...createBasicMiddleware(config, services),
-    ...createBlogMiddleware(config, services)
+    ...createBlogMiddleware(config, services),
+    ...createUploadMiddleware(config, services)
   } as Middleware
 }
 

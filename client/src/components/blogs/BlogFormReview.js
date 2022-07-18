@@ -7,6 +7,10 @@ import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 
 class BlogFormReview extends Component {
+/* eslint-disable no-undef */
+  state = { file: null }
+/* eslint-enable no-undef */
+
   renderFields() {
     const { formValues } = this.props;
 
@@ -44,7 +48,11 @@ class BlogFormReview extends Component {
 
     const { submitBlog, history, formValues } = this.props;
 
-    submitBlog(formValues, history);
+    submitBlog(formValues, this.state.file, history);
+  }
+
+  onFileChange(event) {
+    this.setState({ file: event.target.files[0] });
   }
 
   render() {
@@ -52,7 +60,12 @@ class BlogFormReview extends Component {
       <form onSubmit={this.onSubmit.bind(this)}>
         <h5>Please confirm your entries</h5>
         {this.renderFields()}
-
+        <h5>Add an (optional) image</h5>
+        <input
+          onChange={(e) => this.onFileChange(e)}
+          type="file"
+          accept="image/*"
+        />
         {this.renderButtons()}
       </form>
     );

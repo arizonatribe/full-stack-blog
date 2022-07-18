@@ -1,16 +1,15 @@
 import { Router } from "express"
-import { AuthMiddleware } from "../middleware/auth"
-import { BlogMiddleware } from "../middleware/blog"
+import { Middleware } from "../middleware"
 
 /**
  * Binds auth middleware to endpoints for an instance of the express application router.
  * @function
  * @name createAuthRoutes
  * @param {Router} router An instance of the ExpressJs router
- * @param {AuthMiddleware} middleware A set of auth middleware functions which will be bound to routes
+ * @param {Middleware} middleware A set of auth middleware functions which will be bound to routes
  * @returns {Router} An instance of the [Express Router](https://expressjs.com/en/api.html#router)
  */
-function createAuthRoutes(router: Router, middleware: AuthMiddleware & BlogMiddleware) {
+function createAuthRoutes(router: Router, middleware: Middleware) {
   const {
     logout,
     goHome,

@@ -9,7 +9,8 @@ const homeUrl = "http://localhost:3000"
 describe("When not logged in", () => {
   beforeEach(async () => {
     browser = await puppeteer.launch({
-      headless: false
+      headless: true,
+      args: ["--no-sandbox"]
     })
 
     page = await createPage(browser)
@@ -53,7 +54,8 @@ describe("When not logged in", () => {
 describe("When logged in", () => {
   beforeEach(async () => {
     browser = await puppeteer.launch({
-      headless: false
+      headless: true,
+      args: ["--no-sandbox"]
     })
 
     page = await createPage(browser)
