@@ -1,8 +1,8 @@
 import puppeteer from "puppeteer"
-import { createAnonymousUserSession } from "../utils"
+import { createPage, EnhancedPage } from "../utils"
 
 let browser: puppeteer.Browser
-let page: puppeteer.Page
+let page: EnhancedPage
 
 const homeUrl = "http://localhost:3000"
 
@@ -11,7 +11,7 @@ beforeEach(async () => {
     headless: false
   })
 
-  page = await browser.newPage()
+  page = await createPage(browser)
 })
 
 test("Check the text of the page header", async () => {
@@ -31,14 +31,7 @@ test("Starts OAuth flow on clicking 'Login'", async () => {
 })
 
 test("Can authenticate a test user", async () => {
-  const { sig, session } = await createAnonymousUserSession()
-
-  await page.goto(homeUrl)
-  await page.setCookie({ name: "session", value: session })
-  await page.setCookie({ name: "session.sig", value: sig })
-
-  await page.goto(homeUrl)
-  await page.waitForSelector("ul li a[href='/auth/logout']")
+  await page.login(homeUrl)
 
   const text = await page.$eval("ul li a[href='/auth/logout']", el => el.innerHTML)
   expect(text).toEqual("Logout")

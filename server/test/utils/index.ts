@@ -1,15 +1,15 @@
-import { createUser } from "./user"
 import { createTestEnv } from "./env"
+import { EnhancedPage, PageWithLogin, createPage } from "./page"
 import { createSession } from "./session"
+import { createUser, createAnonymousUserSession } from "./user"
 
-async function createAnonymousUserSession() {
-  const user = await createUser({ name: "testing" })
-  return createSession(user._id.toString())
-}
+export type { EnhancedPage }
 
 export {
+  PageWithLogin,
   createAnonymousUserSession,
   createSession,
   createTestEnv,
-  createUser
+  createUser,
+  createPage
 }
